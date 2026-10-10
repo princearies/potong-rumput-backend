@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Marketplace Potong Rumput — Handyman On-Demand</title>
+  <meta name="description" content="Tempahan potong rumput & handyman on-demand di Putatan / Kota Kinabalu. Cepat, profesional, berpatutan.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            cream: '#f8faf6',
+            ink: '#0f2e1f',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['"Outfit"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(6,78,59,0.12)',
+            'card': '0 4px 24px rgba(6,78,59,0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Outfit', system-ui, sans-serif; background-color: #f8faf6; color: #0f2e1f; }
+    ::selection { background: #a7f3d0; color: #064e3b; }
+    .glass { background: rgba(255,255,255,0.72); backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border: 1px solid rgba(255,255,255,0.35); }
+    .card-hover { transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(6,78,59,0.14); }
+    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); } 70% { box-shadow: 0 0 0 16px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+    .pulse-btn { animation: pulse-ring 2.2s infinite; }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased selection:bg-emerald-200 selection:text-ink">
+
+  <!-- Hero Section -->
+  <header class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 text-white">
+    <div class="absolute inset-0 opacity-[0.08]" aria-hidden="true">
+      <svg viewBox="0 0 800 800" class="w-full h-full object-cover" preserveAspectRatio="none">
+        <defs>
+          <pattern id="grass-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M0 20 Q15 5 30 20 T60 20 M0 40 Q15 25 30 40 T60 40 M0 60 Q15 45 30 60 T60 60" stroke="white" stroke-width="1.5" fill="none" opacity="0.35"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grass-pattern)"/>
+      </svg>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto px-6 pt-20 pb-28 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6 shadow-glass">
+        <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+        Putatan &middot; Kota Kinabalu &middot; Sabah
+      </div>
+
+      <h1 class="font-display text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6 drop-shadow-lg">
+        Marketplace <span class="italic text-emerald-200">Potong Rumput</span>
+      </h1>
+      <p class="text-lg md:text-2xl text-emerald-100/90 max-w-2xl mx-auto leading-relaxed font-light">
+        Handyman on-demand yang pantas, profesional & berpatutan. Tempah dalam 30 saat, tukang sampai dalam masa terdekat.
+      </p>
+
+      <div class="mt-10 flex justify-center gap-8 md:gap-16 text-sm md:text-base font-semibold text-emerald-100/80">
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-extrabold text-white">RM40</div>
+          <div class="mt-1 opacity-80">TERES</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-extrabold text-white">RM70</div>
+          <div class="mt-1 opacity-80">SEMI_D</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-extrabold text-white">RM120</div>
+          <div class="mt-1 opacity-80">BANGLO</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-5 -mt-14 relative z-10">
+
+    <!-- Booking Card -->
+    <section class="glass rounded-[2.5rem] shadow-card p-8 md:p-12 mb-16" aria-label="Borang tempahan">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200/60">
+          <i class="fa-solid fa-scissors text-white text-lg"></i>
+        </div>
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-ink">Borang Tempahan</h2>
+      </div>
+      <p class="text-emerald-700/70 text-sm mb-8 pl-[3.25rem]">Isi butiran di bawah untuk menerima sebut harga segera.</p>
+
+      <form id="bookingForm" class="space-y-5" autocomplete="off" novalidate>
+
+        <!-- Nama -->
+        <div>
+          <label for="name" class="block text-sm font-semibold text-ink mb-1.5">Nama Penuh</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400"></i>
+            <input id="name" name="name" type="text" placeholder="Contoh: Ahmad bin Abdullah"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/80 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition-all text-ink placeholder:text-emerald-300/70 shadow-[inset_0_2px_8px_rgba(6,78,59,0.04)]"
+              required />
+          </div>
+        </div>
+
+        <!-- Telefon -->
+        <div>
+          <label for="phone" class="block text-sm font-semibold text-ink mb-1.5">Nombor Telefon / WhatsApp</label>
+          <div class="relative">
+            <i class="fa-brands fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"></i>
+            <input id="phone" name="phone" type="tel" placeholder="Contoh: 0123456789"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/80 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition-all text-ink placeholder:text-emerald-300/70 shadow-[inset_0_2px_8px_rgba(6,78,59,0.04)]"
+              required />
+          </div>
+        </div>
+
+        <!-- Alamat -->
+        <div>
+          <label for="address" class="block text-sm font-semibold text-ink mb-1.5">Alamat Penuh</label>
+          <div class="relative">
+            <i class="fa-solid fa-location-dot absolute left-4 top-4 text-emerald-400"></i>
+            <textarea id="address" name="address" rows="3" placeholder="Contoh: No. 12, Taman Putatan Jaya, 88300 Kota Kinabalu, Sabah"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/80 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition-all text-ink placeholder:text-emerald-300/70 resize-none shadow-[inset_0_2px_8px_rgba(6,78,59,0.04)]"
+              required></textarea>
+          </div>
+        </div>
+
+        <!-- Rumah Type -->
+        <div>
+          <label class="block text-sm font-semibold text-ink mb-3">Jenis Rumah & Harga Anggaran</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" role="radiogroup" aria-label="Jenis rumah">
+            <button type="button" onclick="selectHouse('TERES', 40, this)" aria-checked="false" role="radio" aria-label="TERES RM 40"
+              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
+              <i class="fa-solid fa-house-chimney text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">TERES</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Teres Satu Tingkat</div>
+              <div class="text-emerald-700 font-bold text-lg">RM 40</div>
+            </button>
+
+            <button type="button" onclick="selectHouse('SEMI_D', 70, this)" aria-checked="false" role="radio" aria-label="SEMI_D RM 70"
+              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
+              <i class="fa-solid fa-building-columns text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">SEMI_D</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Semi-D Dua Tingkat</div>
+              <div class="text-emerald-700 font-bold text-lg">RM 70</div>
+            </button>
+
+            <button type="button" onclick="selectHouse('BANGLO', 120, this)" aria-checked="false" role="radio" aria-label="BANGLO RM 120"
+              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
+              <i class="fa-solid fa-building-columns text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">BANGLO</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Bunglo</div>
+              <div class="text-emerald-700 font-bold text-lg">RM 120</div>
+            </button>
+          </div>
+          <input type="hidden" id="houseType" name="houseType" value="" required>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="submitBtn"
+          class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-extrabold text-lg shadow-lg shadow-emerald-300/40 pulse-btn transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+          <span id="btnText">Hantar Tempahan</span>
+          <i id="btnIcon" class="fa-solid fa-paper-plane"></i>
+        </button>
+
+      </form>
+
+      <!-- Success / Error Message -->
+      <div id="messageBox" class="hidden mt-6 p-6 rounded-2xl text-sm md:text-base leading-relaxed" role="alert"></div>
+    </section>
+
+    <!-- Trust / Info Cards -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20" aria-label="Maklumat perkhidmatan">
+      <article class="glass rounded-3xl p-7 shadow-card card-hover">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center mb-4 shadow-md shadow-emerald-300/40">
+          <i class="fa-solid fa-bolt text-white text-xl"></i>
+        </div>
+        <h3 class="font-display text-xl font-bold text-ink mb-2">Respons Pantas</h3>
+        <p class="text-emerald-800/80 text-sm leading-relaxed">Tempahan terus dihantar ke kumpulan tukang. Tukang akan hubungi anda dalam masa terdekat.</p>
+      </article>
+
+      <article class="glass rounded-3xl p-7 shadow-card card-hover">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center mb-4 shadow-md shadow-emerald-300/40">
+          <i class="fa-solid fa-handshake text-white text-xl"></i>
+        </div>
+        <h3 class="font-display text-xl font-bold text-ink mb-2">Profesional & Bersih</h3>
+        <p class="text-emerald-800/80 text-sm leading-relaxed">Semua tukang disahkan berpengalaman. Harga tetap, tanpa caj tersembunyi.</p>
+      </article>
+
+      <article class="glass rounded-3xl p-7 shadow-card card-hover">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center mb-4 shadow-md shadow-emerald-300/40">
+          <i class="fa-solid fa-location-dot text-white text-xl"></i>
+        </div>
+        <h3 class="font-display text-xl font-bold text-ink mb-2">Putatan & Kota Kinabalu</h3>
+        <p class="text-emerald-800/80 text-sm leading-relaxed">Kawasan tumpuan utama kami. Jika anda berada berhampiran, kami akan sampai.</p>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-emerald-800/60 text-sm pb-10">
+      <div class="inline-flex items-center gap-2 mb-2">
+        <i class="fa-solid fa-leaf text-emerald-500"></i>
+        <span class="font-bold text-ink">Marketplace Potong Rumput</span>
+      </div>
+      <p>Backend oleh Hono &middot; Cloudflare Workers &middot; Cloudflare D1</p>
+    </footer>
+
+  </main>
+
+  <script>
+    // Endpoint backend
+    const API_URL = 'https://potong-rumput-backend.mykira.workers.dev/api/booking';
+
+    let selectedHouse = '';
+
+    function selectHouse(type, price, btn) {
+      selectedHouse = type;
+      document.getElementById('houseType').value = type;
+
+      // Visual selection state
+      document.querySelectorAll('.house-card').forEach(card => {
+        card.classList.remove('border-emerald-500', 'bg-emerald-50/70');
+        card.classList.add('border-emerald-100', 'bg-white/60');
+        card.setAttribute('aria-checked', 'false');
+      });
+
+      btn.classList.remove('border-emerald-100', 'bg-white/60');
+      btn.classList.add('border-emerald-500', 'bg-emerald-50/70');
+      btn.setAttribute('aria-checked', 'true');
+    }
+
+    function showMessage(html, isSuccess) {
+      const box = document.getElementById('messageBox');
+      box.className = `mt-6 p-6 rounded-2xl text-sm md:text-base leading-relaxed shadow-lg ${isSuccess ? 'bg-emerald-50 text-emerald-900 border border-emerald-200' : 'bg-red-50 text-red-900 border border-red-200'}`;
+      box.innerHTML = html;
+      box.classList.remove('hidden');
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function resetButton() {
+      const btn = document.getElementById('submitBtn');
+      const text = document.getElementById('btnText');
+      const icon = document.getElementById('btnIcon');
+      btn.disabled = false;
+      btn.classList.remove('opacity-60');
+      text.textContent = 'Hantar Tempahan';
+      icon.className = 'fa-solid fa-paper-plane';
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const houseType = document.getElementById('houseType').value;
+
+      if (!name || !phone || !address || !houseType) {
+        showMessage('<strong>Perhatian:</strong> Sila lengkapkan semua ruangan dan pilih jenis rumah.', false);
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const btnIcon = document.getElementById('btnIcon');
+
+      btn.disabled = true;
+      btn.classList.add('opacity-60');
+      btnText.textContent = 'Menghantar...';
+      btnIcon.className = 'fa-solid fa-circle-notch fa-spin';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, address, houseType })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          const booking = data.booking;
+          const priceLabel = booking.house_type === 'TERES' ? 'TERES (RM 40)' : booking.house_type === 'SEMI_D' ? 'SEMI_D (RM 70)' : 'BANGLO (RM 120)';
+          showMessage(
+            `<div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-200 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-emerald-700 text-sm"></i></div>
+              <div>
+                <div class="font-extrabold text-base mb-1">Tempahan Berjaya!</div>
+                <div class="text-sm space-y-0.5">
+                  <p><span class="font-semibold">ID Tempahan:</span> <span class="font-mono bg-emerald-100 rounded px-1.5 py-0.5 text-xs">#${booking.id}</span></p>
+                  <p><span class="font-semibold">Nama:</span> ${booking.customer_name}</p>
+                  <p><span class="font-semibold">Jenis Rumah:</span> ${priceLabel}</p>
+                  <p><span class="font-semibold">Harga:</span> RM ${Number(booking.price).toFixed(2)}</p>
+                </div>
+                <div class="mt-3 bg-white/60 rounded-xl p-3 text-xs text-emerald-800/80 border border-emerald-100">
+                  <i class="fa-solid fa-info-circle mr-1"></i> Tukang rumput akan menghubungi anda melalui WhatsApp dalam masa terdekat. Sila pastikan nombor telefon aktif.
+                </div>
+              </div>
+            </div>`,
+            true
+          );
+          document.getElementById('bookingForm').reset();
+          document.getElementById('houseType').value = '';
+          document.querySelectorAll('.house-card').forEach(c => {
+            c.classList.remove('border-emerald-500', 'bg-emerald-50/70');
+            c.classList.add('border-emerald-100', 'bg-white/60');
+            c.setAttribute('aria-checked', 'false');
+          });
+        } else {
+          showMessage(`<strong>Gagal:</strong> ${data.error || 'Sesuatu yang tidak kena berlaku. Sila cuba semula.'}`, false);
+        }
+      } catch (error) {
+        console.error(error);
+        showMessage('<strong>Ralat:</strong> Tidak dapat menyambung ke pelayan. Periksa sambungan internet dan cuba semula.', false);
+      } finally {
+        resetButton();
+      }
+    });
+  </script>
+</body>
+</html>

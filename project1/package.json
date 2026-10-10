@@ -20,10 +20,7 @@
     "wrangler": "^3.88.0"
   },
   "dependencies": {
-    "hono": "^4.6.0",
-    "hono/cors": "^4.6.0",
-    "hono/logger": "^4.6.0",
-    "hono/secure-headers": "^4.6.0"
+    "hono": "^4.6.0"
   },
   "engines": {
     "node": ">=18.0.0"
