@@ -241,6 +241,120 @@
 
   </main>
 
+  <!-- Floating Chatbot Widget -->
+  <div id="chatWidget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3" aria-label="Bantuan chatbot">
+    <!-- Chat Window -->
+    <div id="chatBox" class="hidden w-[340px] max-w-[92vw] rounded-3xl bg-gradient-to-b from-emerald-900 via-emerald-950 to-ink shadow-2xl shadow-emerald-950/60 border border-emerald-700/30 overflow-hidden backdrop-blur-xl">
+      <div class="bg-gradient-to-r from-emerald-600 to-emerald-800 px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center ring-2 ring-emerald-300/30">
+            <i class="fa-solid fa-robot text-emerald-200 text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-base font-bold text-white leading-tight">Pembantu Maya</h3>
+            <p class="text-[11px] text-emerald-100/70">Potong Rumput • 24/7</p>
+          </div>
+        </div>
+        <button onclick="toggleChat()" aria-label="Tutup" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div id="chatMessages" class="h-72 overflow-y-auto p-4 space-y-3 bg-ink/40 text-emerald-50 text-sm leading-relaxed">
+        <div class="flex gap-2">
+          <div class="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center shrink-0 text-xs"><i class="fa-solid fa-robot text-white"></i></div>
+          <div class="bg-white/10 rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%] shadow-sm border border-white/5">
+            <p>Halo! 👋 Ada sebarang pertanyaan mengenai servis potong rumput di <strong>Putatan, Penampang, atau KK</strong>?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick FAQ -->
+      <div class="p-3 bg-ink/60 border-t border-emerald-800/40 flex flex-wrap gap-2" id="faqChips">
+        <button onclick="sendAI('Berapa harga servis potong rumput?')" class="px-3 py-1.5 rounded-full bg-emerald-700/60 hover:bg-emerald-600 text-emerald-100 text-xs font-medium border border-emerald-500/20 transition shadow-sm">💰 Berapa harga?</button>
+        <button onclick="sendAI('Kawasan mana yang diliputi?')" class="px-3 py-1.5 rounded-full bg-emerald-700/60 hover:bg-emerald-600 text-emerald-100 text-xs font-medium border border-emerald-500/20 transition shadow-sm">📍 Kawasan diliputi?</button>
+        <button onclick="sendAI('Bagaimana cara membuat tempahan?')" class="px-3 py-1.5 rounded-full bg-emerald-700/60 hover:bg-emerald-600 text-emerald-100 text-xs font-medium border border-emerald-500/20 transition shadow-sm">🌿 Cara tempahan?</button>
+      </div>
+
+      <!-- User Input -->
+      <form onsubmit="handleChatSubmit(event)" class="p-3 bg-gradient-to-r from-emerald-800 to-ink border-t border-emerald-700/30 flex gap-2">
+        <input id="chatInput" type="text" placeholder="Taip soalan..." autocomplete="off"
+          class="flex-1 px-3.5 py-2.5 rounded-xl bg-white/10 border border-emerald-600/30 text-emerald-50 text-sm placeholder:text-emerald-300/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-transparent transition shadow-inner" />
+        <button type="submit" aria-label="Hantar soalan"
+          class="w-9 h-9 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center shadow-lg shadow-emerald-900/30 transition active:scale-95">
+          <i class="fa-solid fa-paper-plane text-sm"></i>
+        </button>
+      </form>
+
+      <!-- WhatsApp Admin Link -->
+      <div class="p-3 bg-gradient-to-r from-emerald-800 to-ink border-t border-emerald-700/30">
+        <a href="https://wa.me/60123456789?text=Hai%20Admin%20Potong%20Rumput%20—%20ada%20soalan" target="_blank" rel="noopener noreferrer"
+          class="flex items-center gap-2.5 w-full justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white py-2.5 font-semibold text-sm shadow-lg shadow-emerald-900/20 transition active:scale-[0.98]">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>Ada soalan lain? WhatsApp Admin</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Floating Button -->
+    <button onclick="toggleChat()" aria-label="Buka chatbot" aria-expanded="false" id="chatFab"
+      class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-2xl shadow-emerald-500/40 flex items-center justify-center text-2xl ring-4 ring-emerald-900/40 hover:scale-110 hover:rotate-3 transition-transform duration-300 relative">
+      <i class="fa-solid fa-comment-dots"></i>
+      <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-ink text-[10px] font-extrabold flex items-center justify-center">1</span>
+    </button>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+    const chatFab = document.getElementById('chatFab');
+    const chatMessages = document.getElementById('chatMessages');
+    let chatOpen = false;
+
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      chatBox.classList.toggle('hidden', !chatOpen);
+      chatFab.setAttribute('aria-expanded', String(chatOpen));
+      if (chatOpen) chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function appendMsg(text, isBot) {
+      const div = document.createElement('div');
+      div.className = 'flex gap-2 ' + (isBot ? '' : 'flex-row-reverse');
+      div.innerHTML = `
+        <div class="w-7 h-7 rounded-full ${isBot ? 'bg-emerald-600' : 'bg-white/20'} flex items-center justify-center shrink-0 text-xs">
+          <i class="fa-solid ${isBot ? 'fa-robot' : 'fa-user'} text-white"></i>
+        </div>
+        <div class="${isBot ? 'bg-white/10 rounded-2xl rounded-tl-sm' : 'bg-emerald-600 rounded-2xl rounded-tr-sm'} px-3.5 py-2.5 max-w-[85%] shadow-sm border ${isBot ? 'border-white/5' : 'border-transparent'} text-sm leading-relaxed">
+          <p>${text}</p>
+        </div>`;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendAI(text) {
+      appendMsg(text, false);
+      fetch('https://potong-rumput-backend.mykira.workers.dev/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      })
+      .then(r => r.json())
+      .then(data => {
+        appendMsg(data.reply || 'Maaf, saya belum dapat menjawab. Cuba soalan lain.', true);
+      })
+      .catch(() => appendMsg('Ralat sambungan AI. Sila cuba semula.', true));
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const val = input.value.trim();
+      if (!val) return;
+      sendAI(val);
+      input.value = '';
+    }
+  </script>
+
   <script>
     // Endpoint backend
     const API_URL = 'https://potong-rumput-backend.mykira.workers.dev/api/booking';

@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
+[ai]
+binding = "AI"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "potong-rumput-db"
@@ -13,8 +16,9 @@ migrations_dir = "migrations"
 name = "potong-rumput-backend"
 
 [env.production.vars]
-TELEGRAM_BOT_TOKEN = "REPLACE_WITH_TELEGRAM_BOT_TOKEN"
-TELEGRAM_GROUP_ID = "REPLACE_WITH_TELEGRAM_GROUP_ID"
+WHATSAPP_TOKEN = "REPLACE_WITH_WHATSAPP_ACCESS_TOKEN"
+WHATSAPP_PHONE_ID = "REPLACE_WITH_WHATSAPP_PHONE_NUMBER_ID"
+PROVIDER_WHATSAPP_NUMBER = "60123456789"
 
 [[env.production.d1_databases]]
 binding = "DB"

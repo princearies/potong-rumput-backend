@@ -32,7 +32,7 @@ const HOUSE_TYPE_LABEL = {
   BANGLO: 'Bunglo',
 };
 
-const TELEGRAM_API_BASE = 'https://api.telegram.org/bot';
+const WHATSAPP_API_BASE = 'https://graph.facebook.com/v18.0';
 
 // ============================================================================
 // 2. APP INITIALIZATION
@@ -102,6 +102,8 @@ app.get('/', (c) => {
       booking: 'POST /api/booking',
       webhook: 'POST /api/bot/webhook',
       bookings: 'GET /api/bookings',
+      chat: 'POST /api/chat',
+      provider: 'POST /api/provider/register'
     },
   });
 });
@@ -176,7 +178,7 @@ app.post('/api/booking', async (c) => {
     timeZone: 'Asia/Kuala_Lumpur',
   });
 
-  // --- Hantar notifikasi Telegram ---
+  // --- Hantar notifikasi WhatsApp ---
   const message = [
     '🌿 *JOB BARU: Potong Rumput* 🌿',
     '',
@@ -188,43 +190,39 @@ app.post('/api/booking', async (c) => {
     `🆔 *ID Tempahan*: ${insertedRow.id}`,
     `⏰ *Masa*: ${createdLocal}`,
     '',
-    'Tekan butang di bawah untuk menerima job ini.',
+    'Sila klik pautan WhatsApp di bawah untuk menerima job ini.',
   ].join('\n');
 
-  /** @type {{ inline_keyboard: Array<Array<{ text: string, callback_data: string, style?: string }>> }} */
-  const inlineKeyboard = {
-    inline_keyboard: [
-      [
-        {
-          text: '✅ AMBIL JOB INI',
-          callback_data: `accept:${insertedRow.id}`,
-          style: 'success',
-        },
-      ],
-    ],
+  // WhatsApp Cloud API message payload
+  const whatsappBody = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: c.env.PROVIDER_WHATSAPP_NUMBER,
+    type: 'text',
+    text: {
+      body: message + `\n\n👉 Terima job ini: https://wa.me/${c.env.PROVIDER_WHATSAPP_NUMBER}?text=Ambil+Job+${insertedRow.id}`
+    }
   };
 
   try {
-    await fetch(`${TELEGRAM_API_BASE}${c.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await fetch(`${WHATSAPP_API_BASE}/${c.env.WHATSAPP_PHONE_ID}/messages`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: c.env.TELEGRAM_GROUP_ID,
-        text: message,
-        parse_mode: 'HTML',
-        reply_markup: inlineKeyboard,
-      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${c.env.WHATSAPP_TOKEN}`
+      },
+      body: JSON.stringify(whatsappBody),
     }).then(async (response) => {
       if (!response.ok) {
         const text = await response.text().catch(() => '');
         throw new Error(
-          `Telegram API error ${response.status}: ${response.statusText} (${text.slice(0, 200)})`
+          `WhatsApp API error ${response.status}: ${response.statusText} (${text.slice(0, 200)})`
         );
       }
     });
-  } catch (telegramError) {
-    // Gagal hantar notifikasi tidak membatalkan tempahan: log & teruskan (fail-open).
-    console.error('[Telegram] Gagal hantar notifikasi:', telegramError);
+  } catch (whatsappError) {
+    // Gagal hantar notifikasi WhatsApp tidak membatalkan tempahan: log & teruskan (fail-open).
+    console.error('[WhatsApp] Gagal hantar notifikasi:', whatsappError);
   }
 
   return c.json({
@@ -246,67 +244,77 @@ app.post('/api/booking', async (c) => {
 /**
  * POST /api/bot/webhook
  *
- * Mengendalikan Callback Query daripada Telegram apabila tukang rumput
- * menekan butang "AMBIL JOB INI". Status ditukar ke ACCEPTED dan
- * provider_name direkodkan. Jawapan dikembalikan kepada tukang.
+ * Mengendalikan mesej WhatsApp daripada tukang apabila menerima job.
+ * Status ditukar ke ACCEPTED dan provider_name direkodkan.
  */
 app.post('/api/bot/webhook', async (c) => {
-  /** @type {{ update_id: number, callback_query?: object }} */
-  let update;
+  let payload;
   try {
-    const rawText = await c.req.raw.text();
-    update = JSON.parse(rawText);
+    payload = JSON.parse(await c.req.raw.text());
   } catch {
     return c.json(err('Invalid JSON payload', 400));
   }
 
-  const callbackQuery = update.callback_query;
-  if (!callbackQuery) {
-    // Webhook biasa (e.g. message update) tidak dikendalikan.
-    return c.json({ ok: true, message: 'Webhook diterima (tiada callback)' });
+  // WhatsApp webhook payload: entry[].changes[].value.messages[]
+  const messages = payload?.entry?.[0]?.changes?.[0]?.value?.messages || [];
+  const message = messages[0] || {};
+  const from = message.from || '';
+  const body = (message.text || message)?.body || '';
+
+  if (!body || messages.length === 0) {
+    return c.json({ ok: true, message: 'Webhook WhatsApp diterima (tiada mesej)' });
   }
 
-  // Ketepikan mesej yang dihantar oleh bot itu sendiri.
-  if (callbackQuery.from && callbackQuery.from.is_bot) {
-    return c.json({
-      ok: false,
-      error: 'bot tidak boleh menekan butang pada diri sendiri',
-    });
-  }
+  const idMatch = body.match(/(?:#|JOB\s+)(\d+)/i) || body.match(/(\d{1,10})/);
+  const bookingIdStr = idMatch ? idMatch[1] : null;
 
-  const [action, idStr] = callbackQuery.data.split(':');
-
-  if (action !== 'accept' || !idStr || isNaN(Number(idStr))) {
-    // Maklum balas kepada tukang: pilihan tidak sah.
+  if (!bookingIdStr || isNaN(Number(bookingIdStr))) {
     try {
-      await fetch(`${TELEGRAM_API_BASE}${c.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+      await fetch(`${WHATSAPP_API_BASE}/${c.env.WHATSAPP_PHONE_ID}/messages`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ callback_query_id: callbackQuery.id, text: 'Pilihan tidak sah, sila cuba semula.' }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${c.env.WHATSAPP_TOKEN}`
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: from,
+          type: 'text',
+          text: { body: 'Format mesej tidak dikenali. Sila balas dengan format: AMBIL JOB INI #<ID>' }
+        })
       });
     } catch {
-      // Jawapan Telegram gagal (mis. sudah luput) - abaikan.
+      // abaikan
     }
-    return c.json({ ok: false, error: 'callback_data tidak sah' });
+    return c.json({ ok: false, error: 'mesej WhatsApp tidak mengandungi ID tempahan' });
   }
 
-  const bookingId = Number(idStr);
+  const bookingId = Number(bookingIdStr);
 
   const db = c.env.DB;
   const updateResult = await db
     .prepare(
       `UPDATE bookings SET status = ?, provider_name = ? WHERE id = ? AND status = ?`
     )
-    .bind('ACCEPTED', callbackQuery.from.first_name, bookingId, 'PENDING')
+    .bind('ACCEPTED', from, bookingId, 'PENDING')
     .run();
 
   if (updateResult.meta.changes_count === 0) {
-    // Tempahan tidak dijumpai atau sudah diambil oleh tukang lain.
     try {
-      await fetch(`${TELEGRAM_API_BASE}${c.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+      await fetch(`${WHATSAPP_API_BASE}/${c.env.WHATSAPP_PHONE_ID}/messages`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ callback_query_id: callbackQuery.id, text: 'Job ini sudah diambil oleh tukang lain.' }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${c.env.WHATSAPP_TOKEN}`
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: from,
+          type: 'text',
+          text: { body: `Job #${bookingId} sudah diambil oleh tukang lain.` }
+        })
       });
     } catch {
       // abaikan
@@ -314,50 +322,51 @@ app.post('/api/bot/webhook', async (c) => {
     return c.json({ ok: false, error: 'tempahan tidak dijumpai atau sudah diambil' });
   }
 
-  // Notifikasi kepada kumpulan: job diterima.
   try {
     const acceptedRow = await db
-      .prepare(
-        'SELECT id, customer_name, phone, address, house_type, price, created_at ' +
-          'FROM bookings WHERE id = ?'
-      )
+      .prepare('SELECT id, customer_name, phone, address, house_type, price, created_at FROM bookings WHERE id = ?')
       .bind(bookingId)
       .first();
 
     if (acceptedRow) {
       const acceptMessage = [
-        '✅ *JOB DITERIMA*',
+        '✅ JOB DITERIMA',
         '',
-        `👷 Tukang: ${callbackQuery.from.first_name}`,
+        `👷 Tukang: ${from}`,
         `🆔 ID Tempahan: ${acceptedRow.id}`,
         `👤 Pelanggan: ${acceptedRow.customer_name}`,
         `📞 Telefon: ${acceptedRow.phone}`,
         `💰 Harga: RM ${Number(acceptedRow.price).toFixed(2)}`,
         '',
-        'Tukang diminta menghubungi pelanggan untuk menyepakati tarikh & masa.',
+        'Sila hubungi pelanggan untuk menyepakati tarikh & masa.'
       ].join('\n');
 
-      await fetch(`${TELEGRAM_API_BASE}${c.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      await fetch(`${WHATSAPP_API_BASE}/${c.env.WHATSAPP_PHONE_ID}/messages`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${c.env.WHATSAPP_TOKEN}`
+        },
         body: JSON.stringify({
-          chat_id: c.env.TELEGRAM_GROUP_ID,
-          text: acceptMessage,
-          parse_mode: 'HTML',
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: c.env.PROVIDER_WHATSAPP_NUMBER,
+          type: 'text',
+          text: { body: acceptMessage }
         }),
       }).then((response) => {
         if (!response.ok) {
-          console.warn('[Telegram] Gagal hantar notifikasi penerimaan job:', response.status);
+          console.warn('[WhatsApp] Gagal hantar notifikasi penerimaan job:', response.status);
         }
       });
     }
-  } catch (telegramError) {
-    console.error('[Telegram] Gagal hantar notifikasi penerimaan:', telegramError);
+  } catch (whatsappError) {
+    console.error('[WhatsApp] Gagal hantar notifikasi penerimaan:', whatsappError);
   }
 
   return c.json({
     ok: true,
-    message: `Job #${bookingId} diterima oleh ${callbackQuery.from.first_name}`,
+    message: `Job #${bookingId} diterima oleh tukang (${from})`
   });
 });
 
@@ -395,6 +404,145 @@ app.get('/api/bookings', async (c) => {
   } catch {
     console.error('[Bookings] Gagal memuat senarai tempahan');
     return c.json(err('Gagal memuat senarai tempahan', 500));
+  }
+});
+
+/**
+ * POST /api/provider/register
+ *
+ * Mendaftar tukang rumput baru ke dalam pangkalan data D1.
+ */
+app.post('/api/provider/register', async (c) => {
+  let payload;
+  try {
+    payload = await c.req.json();
+  } catch {
+    return c.json(err('Bad request: fail JSON tidak sah', 400));
+  }
+
+  const { fullName, phone, icNumber, zones } = payload;
+
+  if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 2) {
+    return c.json(err('Nama penuh tukang tidak sah', 400));
+  }
+
+  if (!phone || typeof phone !== 'string' || !/^\d{9,15}$/.test(phone.replace(/\D/g, ''))) {
+    return c.json(err('Nombor WhatsApp tidak sah', 400));
+  }
+
+  if (!zones || typeof zones !== 'string' || zones.trim().length < 2) {
+    return c.json(err('Kawasan liputan (zones) diperlukan', 400));
+  }
+
+  const db = c.env.DB;
+  try {
+    const result = await db
+      .prepare(
+        'INSERT INTO providers (full_name, phone, ic_number, zones, status) VALUES (?, ?, ?, ?, ?)'
+      )
+      .bind(
+        fullName.trim(),
+        phone.trim(),
+        icNumber ? String(icNumber).trim() : '',
+        zones.trim(),
+        'PENDING_APPROVAL'
+      )
+      .run();
+
+    const newRow = await db
+      .prepare('SELECT id, full_name, phone, zones, status, created_at FROM providers WHERE id = ?')
+      .bind(result.meta.last_row_id)
+      .first();
+
+    // Notifikasi WhatsApp ke admin (provider number)
+    const notifyMsg = [
+      '👷 *PENDAFTARAN TUKANG BARU* 👷',
+      '',
+      `NAMA: ${newRow.full_name}`,
+      `TELEFON: ${newRow.phone}`,
+      `IC/LESEN: ${newRow.ic_number || '- TIDAK DISERTAKAN -'}`,
+      `ZON: ${newRow.zones}`,
+      `STATUS: PENDING_APPROVAL`,
+      `MASA: ${new Date(newRow.created_at).toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' })}`,
+      '',
+      'Sila semak dan aktifkan akaun jika layak.'
+    ].join('\n');
+
+    try {
+      await fetch(`${WHATSAPP_API_BASE}/${c.env.WHATSAPP_PHONE_ID}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${c.env.WHATSAPP_TOKEN}`
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: c.env.PROVIDER_WHATSAPP_NUMBER,
+          type: 'text',
+          text: { body: notifyMsg }
+        }),
+      });
+    } catch (notifyErr) {
+      console.error('[WhatsApp] Gagal hantar notifikasi pendaftaran:', notifyErr);
+    }
+
+    return c.json({
+      success: true,
+      message: 'Pendaftaran berjaya! Pihak admin akan menyemak dan mengaktifkan akaun WhatsApp anda dalam masa 24 jam.',
+      provider: {
+        id: newRow.id,
+        full_name: newRow.full_name,
+        phone: newRow.phone,
+        zones: newRow.zones,
+        status: newRow.status,
+        created_at: newRow.created_at
+      }
+    });
+  } catch (dbErr) {
+    console.error('[Provider] Gagal menyimpan:', dbErr);
+    // Jika ralat UNIQUE constraint pada telefon
+    if (String(dbErr).includes('UNIQUE') || String(dbErr).includes('constraint')) {
+      return c.json(err('Nombor telefon ini sudah didaftarkan', 409));
+    }
+    return c.json(err('Gagal menyimpan pendaftaran', 500));
+  }
+});
+
+/**
+ * POST /api/chat
+ *
+ * Pembantu Maya Potong Rumput menggunakan Cloudflare Workers AI.
+ */
+app.post('/api/chat', async (c) => {
+  let payload;
+  try {
+    payload = await c.req.json();
+  } catch {
+    return c.json(err('Bad request: fail JSON tidak sah', 400));
+  }
+
+  const userMessage = payload?.message;
+  if (!userMessage || typeof userMessage !== 'string' || userMessage.trim().length < 1) {
+    return c.json(err('Mesej tidak dibenarkan', 400));
+  }
+
+  try {
+    const ai = c.env.AI;
+    const systemPrompt = `Anda adalah Pembantu Maya Potong Rumput Sabah — mesra, santai, ringkas, profesional. Kawasan servis: Putatan, Penampang, Kota Kinabalu. Harga: TERES (RM40), SEMI_D (RM70), BANGLO (RM120). Jawab dalam Bahasa Melayu atau Inggeris mengikut soalan pengguna.`;
+
+    const response = await ai.run('@cf/meta/llama-3.1-8b-instruct', {
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userMessage.trim() }
+      ]
+    });
+
+    const reply = response?.response || response?.message || JSON.stringify(response);
+    return c.json({ reply: String(reply).trim() });
+  } catch (aiErr) {
+    console.error('[AI] Gagal menjana respons:', aiErr);
+    return c.json(err('Pembantu maya sedang sibuk. Sila cuba semula sebentar.', 503));
   }
 });
 

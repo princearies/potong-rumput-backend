@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Pendaftaran Tukang Rumput — Marketplace Potong Rumput</title>
+  <meta name="description" content="Daftar sebagai tukang rumput profesional di Putatan / Kota Kinabalu." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' },
+            ink: '#0f2e1f',
+            cream: '#f8faf6',
+          },
+          fontFamily: { display: ['"Playfair Display"','serif'], body: ['"Outfit"','system-ui','sans-serif'] },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Outfit', system-ui, sans-serif; background-color: #0b1f16; color: #ecfdf5; }
+    ::selection { background: #34d399; color: #064e3b; }
+    .glass-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(18px) saturate(140%); border: 1px solid rgba(255,255,255,0.08); }
+    .card-hover { transition: all 0.25s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(16,185,129,0.18); }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-emerald-300 selection:text-ink">
+
+  <header class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-950 to-ink">
+    <div class="absolute inset-0 opacity-[0.06]" aria-hidden="true">
+      <svg viewBox="0 0 800 800" class="w-full h-full" preserveAspectRatio="none">
+        <defs><pattern id="grass-dark" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M0 20 Q15 5 30 20 T60 20 M0 40 Q15 25 30 40 T60 40 M0 60 Q15 45 30 60 T60 60" stroke="white" stroke-width="1.5" fill="none" opacity="0.35"/></pattern></defs>
+        <rect width="100%" height="100%" fill="url(#grass-dark)"/>
+      </svg>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-6 pt-16 pb-20 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-xs font-medium mb-6 shadow-glass">
+        <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+        Putatan &middot; Penampang &middot; Kota Kinabalu
+      </div>
+      <h1 class="font-display text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight mb-6 text-emerald-50 drop-shadow-lg">
+        Daftar <span class="italic text-emerald-300">Tukang Rumput</span>
+      </h1>
+      <p class="text-emerald-100/70 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+        Sertai pasukan profesional kami. Terima job terus ke WhatsApp anda dalam masa terdekat.
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto px-5 -mt-14 relative z-10 mb-16">
+    <section class="glass-card rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-emerald-900/40" aria-label="Borang pendaftaran tukang">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-md shadow-emerald-900/40">
+          <i class="fa-solid fa-user-tie text-white text-lg"></i>
+        </div>
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-emerald-50">Pendaftaran Tukang</h2>
+      </div>
+      <p class="text-emerald-200/60 text-sm mb-8 pl-[3.25rem]">Lengkapkan butiran untuk semakan admin.</p>
+
+      <form id="providerForm" class="space-y-5" autocomplete="off" novalidate>
+        <div>
+          <label for="fullName" class="block text-sm font-semibold text-emerald-100 mb-1.5">Nama Penuh</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-emerald-300"></i>
+            <input id="fullName" name="fullName" type="text" placeholder="Ahmad bin Abdullah"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-emerald-700/40 text-emerald-50 placeholder:text-emerald-400/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 focus:border-transparent transition shadow-[inset_0_2px_8px_rgba(6,78,59,0.1)]" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="phone" class="block text-sm font-semibold text-emerald-100 mb-1.5">Nombor WhatsApp</label>
+          <div class="relative">
+            <i class="fa-brands fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-emerald-300"></i>
+            <input id="phone" name="phone" type="tel" placeholder="60123456789"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-emerald-700/40 text-emerald-50 placeholder:text-emerald-400/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 focus:border-transparent transition shadow-[inset_0_2px_8px_rgba(6,78,59,0.1)]" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="icNumber" class="block text-sm font-semibold text-emerald-100 mb-1.5">Nombor Kad Pengenalan / Lesen (Pilihan)</label>
+          <div class="relative">
+            <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-emerald-300"></i>
+            <input id="icNumber" name="icNumber" type="text" placeholder="Contoh: 900101-01-1234"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-emerald-700/40 text-emerald-50 placeholder:text-emerald-400/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 focus:border-transparent transition shadow-[inset_0_2px_8px_rgba(6,78,59,0.1)]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-emerald-100 mb-3">Kawasan Liputan</label>
+          <div class="grid grid-cols-3 gap-3">
+            <label class="flex items-center gap-3 rounded-2xl bg-white/5 border border-emerald-700/30 px-4 py-3 cursor-pointer hover:bg-white/10 transition select-none">
+              <input type="checkbox" name="zones" value="PUTATAN" class="w-5 h-5 accent-emerald-400 rounded" />
+              <span class="text-sm font-medium text-emerald-100">Putatan</span>
+            </label>
+            <label class="flex items-center gap-3 rounded-2xl bg-white/5 border border-emerald-700/30 px-4 py-3 cursor-pointer hover:bg-white/10 transition select-none">
+              <input type="checkbox" name="zones" value="PENAMPANG" class="w-5 h-5 accent-emerald-400 rounded" />
+              <span class="text-sm font-medium text-emerald-100">Penampang</span>
+            </label>
+            <label class="flex items-center gap-3 rounded-2xl bg-white/5 border border-emerald-700/30 px-4 py-3 cursor-pointer hover:bg-white/10 transition select-none">
+              <input type="checkbox" name="zones" value="KK" class="w-5 h-5 accent-emerald-400 rounded" />
+              <span class="text-sm font-medium text-emerald-100">KK</span>
+            </label>
+          </div>
+          <input type="hidden" id="zonesHidden" name="zonesHidden" value="" />
+        </div>
+
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="agree" required class="mt-1 w-5 h-5 accent-emerald-400 rounded shrink-0" />
+          <span class="text-sm text-emerald-200/70 leading-relaxed">
+            Saya bersetuju dengan <a href="#" class="underline text-emerald-300 hover:text-white">Syarat & Terma</a> platform ini dan membenarkan data disimpan untuk tujuan pendaftaran.
+          </span>
+        </label>
+
+        <button type="submit" id="submitBtn"
+          class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-extrabold text-lg shadow-xl shadow-emerald-900/30 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+          <span id="btnText">Hantar Pendaftaran</span>
+          <i id="btnIcon" class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+
+      <div id="messageBox" class="hidden mt-6 p-6 rounded-2xl text-sm md:text-base leading-relaxed shadow-lg" role="alert"></div>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = 'https://potong-rumput-backend.mykira.workers.dev/api/provider/register';
+
+    document.getElementById('providerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const icNumber = document.getElementById('icNumber').value.trim();
+      const zoneCheckboxes = Array.from(document.querySelectorAll('input[name="zones"]:checked')).map(cb => cb.value);
+      const agree = document.getElementById('agree').checked;
+
+      if (!fullName || fullName.length < 2) {
+        showMsg('Nama penuh diperlukan.', false); return;
+      }
+      if (!phone || !/^\d{9,15}$/.test(phone.replace(/\D/g, ''))) {
+        showMsg('Nombor WhatsApp tidak sah.', false); return;
+      }
+      if (zoneCheckboxes.length === 0) {
+        showMsg('Sila pilih sekurang-kurangnya satu kawasan liputan.', false); return;
+      }
+      if (!agree) {
+        showMsg('Sila bersetuju dengan syarat & terma.', false); return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.classList.add('opacity-60');
+      document.getElementById('btnText').textContent = 'Menghantar...';
+      document.getElementById('btnIcon').className = 'fa-solid fa-circle-notch fa-spin';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, phone, icNumber: icNumber || undefined, zones: zoneCheckboxes.join(',') })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showMsg(`<div class="flex items-start gap-3"><div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-emerald-200 text-sm"></i></div><div><div class="font-extrabold text-base mb-1">Pendaftaran Berjaya!</div><p>Pihak admin akan menyemak dan mengaktifkan akaun WhatsApp anda dalam masa 24 jam.</p></div></div>`, true);
+          document.getElementById('providerForm').reset();
+        } else {
+          showMsg(`<strong>Gagal:</strong> ${data.error || 'Ralat pelayan.'}`, false);
+        }
+      } catch (e) {
+        console.error(e);
+        showMsg('<strong>Ralat:</strong> Tidak dapat menyambung. Periksa sambungan internet.', false);
+      } finally {
+        btn.disabled = false; btn.classList.remove('opacity-60');
+        document.getElementById('btnText').textContent = 'Hantar Pendaftaran';
+        document.getElementById('btnIcon').className = 'fa-solid fa-paper-plane';
+      }
+    });
+
+    function showMsg(html, ok) {
+      const box = document.getElementById('messageBox');
+      box.className = `mt-6 p-6 rounded-2xl text-sm md:text-base leading-relaxed shadow-xl ${ok ? 'bg-emerald-900/40 text-emerald-100 border border-emerald-700/40' : 'bg-red-900/30 text-red-200 border border-red-800/40'}`;
+      box.innerHTML = html;
+      box.classList.remove('hidden');
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
