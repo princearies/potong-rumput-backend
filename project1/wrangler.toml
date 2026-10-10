@@ -1,0 +1,23 @@
+name = "potong-rumput-backend"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "potong-rumput-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[env.production]
+name = "potong-rumput-backend"
+
+[env.production.vars]
+TELEGRAM_BOT_TOKEN = "REPLACE_WITH_TELEGRAM_BOT_TOKEN"
+TELEGRAM_GROUP_ID = "REPLACE_WITH_TELEGRAM_GROUP_ID"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "potong-rumput-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "migrations"
