@@ -168,7 +168,7 @@ app.get('/', (c) => {
   return c.json({
     ok: true,
     service: 'potong-rumput-backend',
-    version: '1.0.0',
+    version: '1.1.0-area-pricing',
     endpoints: {
       booking: 'POST /api/booking',
       webhook: 'POST /api/bot/webhook',
