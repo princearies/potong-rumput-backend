@@ -15,6 +15,9 @@ migrations_dir = "migrations"
 [env.production]
 name = "potong-rumput-backend"
 
+[env.production.ai]
+binding = "AI"
+
 [env.production.vars]
 WHATSAPP_TOKEN = "REPLACE_WITH_WHATSAPP_ACCESS_TOKEN"
 WHATSAPP_PHONE_ID = "REPLACE_WITH_WHATSAPP_PHONE_NUMBER_ID"

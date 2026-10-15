@@ -93,16 +93,16 @@
 
       <div class="mt-10 flex justify-center gap-8 md:gap-16 text-sm md:text-base font-semibold text-emerald-100/80">
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-extrabold text-white">RM40</div>
-          <div class="mt-1 opacity-80">TERES</div>
+          <div class="text-3xl md:text-4xl font-extrabold text-white">RM50</div>
+          <div class="mt-1 opacity-80">Harga minima</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-extrabold text-white">RM70</div>
-          <div class="mt-1 opacity-80">SEMI_D</div>
+          <div class="text-3xl md:text-4xl font-extrabold text-white">Ikut luas</div>
+          <div class="mt-1 opacity-80">m² × ketebalan</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-extrabold text-white">RM120</div>
-          <div class="mt-1 opacity-80">BANGLO</div>
+          <div class="text-3xl md:text-4xl font-extrabold text-white">+Bersih</div>
+          <div class="mt-1 opacity-80">RM20 / RM30</div>
         </div>
       </div>
     </div>
@@ -156,38 +156,83 @@
           </div>
         </div>
 
-        <!-- Rumah Type -->
+        <!-- Zon -->
         <div>
-          <label class="block text-sm font-semibold text-ink mb-3">Jenis Rumah & Harga Anggaran</label>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" role="radiogroup" aria-label="Jenis rumah">
-            <button type="button" onclick="selectHouse('TERES', 40, this)" aria-checked="false" role="radio" aria-label="TERES RM 40"
-              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+          <label for="zone" class="block text-sm font-semibold text-ink mb-1.5">Kawasan (Zon)</label>
+          <div class="relative">
+            <i class="fa-solid fa-map-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400"></i>
+            <select id="zone" name="zone"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/80 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition-all text-ink shadow-[inset_0_2px_8px_rgba(6,78,59,0.04)]">
+              <option value="PUTATAN">Putatan (tiada caj jarak)</option>
+              <option value="KOTA_KINABALU">Kota Kinabalu (+RM5)</option>
+              <option value="PENAMPANG">Penampang (+RM5)</option>
+              <option value="LAIN">Luar kawasan (+RM10)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Luas -->
+        <div>
+          <label for="areaM2" class="block text-sm font-semibold text-ink mb-1.5">Anggaran luas rumput (m²)</label>
+          <div class="relative">
+            <i class="fa-solid fa-ruler-combined absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400"></i>
+            <input id="areaM2" name="areaM2" type="number" min="5" max="5000" step="1" value="50"
+              class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/80 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition-all text-ink placeholder:text-emerald-300/70 shadow-[inset_0_2px_8px_rgba(6,78,59,0.04)]"
+              required />
+          </div>
+          <p class="text-xs text-emerald-700/60 mt-1">Contoh: laman kecil ~30m², sederhana ~100m², besar 200m²+.</p>
+        </div>
+
+        <!-- Ketebalan -->
+        <div>
+          <label class="block text-sm font-semibold text-ink mb-3">Ketebalan rumput</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" role="radiogroup" aria-label="Ketebalan rumput">
+            <button type="button" onclick="selectThickness('NIPIS', this)" aria-checked="false" role="radio" aria-label="Nipis"
+              class="thick-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
               <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
-              <i class="fa-solid fa-house-chimney text-2xl text-emerald-600 mb-3"></i>
-              <div class="font-extrabold text-xl text-ink">TERES</div>
-              <div class="text-xs text-emerald-600 font-medium mb-1">Teres Satu Tingkat</div>
-              <div class="text-emerald-700 font-bold text-lg">RM 40</div>
+              <i class="fa-solid fa-seedling text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">NIPIS</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Rumput pendek ×1.0</div>
             </button>
 
-            <button type="button" onclick="selectHouse('SEMI_D', 70, this)" aria-checked="false" role="radio" aria-label="SEMI_D RM 70"
-              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+            <button type="button" onclick="selectThickness('SEDERHANA', this)" aria-checked="true" role="radio" aria-label="Sederhana"
+              class="thick-card card-hover relative rounded-2xl border-2 border-emerald-500 bg-emerald-50/70 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
               <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
-              <i class="fa-solid fa-building-columns text-2xl text-emerald-600 mb-3"></i>
-              <div class="font-extrabold text-xl text-ink">SEMI_D</div>
-              <div class="text-xs text-emerald-600 font-medium mb-1">Semi-D Dua Tingkat</div>
-              <div class="text-emerald-700 font-bold text-lg">RM 70</div>
+              <i class="fa-solid fa-wheat-awn text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">SEDERHANA</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Biasa ×1.3</div>
             </button>
 
-            <button type="button" onclick="selectHouse('BANGLO', 120, this)" aria-checked="false" role="radio" aria-label="BANGLO RM 120"
-              class="house-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
+            <button type="button" onclick="selectThickness('TEBAL', this)" aria-checked="false" role="radio" aria-label="Lalang tebal"
+              class="thick-card card-hover relative rounded-2xl border-2 border-emerald-100 bg-white/60 p-5 text-left shadow-card hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-[0.98] transition-all overflow-hidden group">
               <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-full -translate-y-6 translate-x-6"></div>
-              <i class="fa-solid fa-building-columns text-2xl text-emerald-600 mb-3"></i>
-              <div class="font-extrabold text-xl text-ink">BANGLO</div>
-              <div class="text-xs text-emerald-600 font-medium mb-1">Bunglo</div>
-              <div class="text-emerald-700 font-bold text-lg">RM 120</div>
+              <i class="fa-solid fa-tree text-2xl text-emerald-600 mb-3"></i>
+              <div class="font-extrabold text-xl text-ink">TEBAL</div>
+              <div class="text-xs text-emerald-600 font-medium mb-1">Lalang tebal ×1.6</div>
             </button>
           </div>
-          <input type="hidden" id="houseType" name="houseType" value="" required>
+          <input type="hidden" id="thickness" name="thickness" value="SEDERHANA" required>
+        </div>
+
+        <!-- Bersih -->
+        <div>
+          <label class="flex items-start gap-3 rounded-2xl border-2 border-emerald-100 bg-white/60 p-4 cursor-pointer hover:border-emerald-400 transition-all">
+            <input id="cleanup" name="cleanup" type="checkbox" class="mt-1 w-5 h-5 accent-emerald-600">
+            <span>
+              <span class="block text-sm font-semibold text-ink">Lepas potong, kasi bersih & angkut</span>
+              <span class="block text-xs text-emerald-700/70 mt-0.5">Sapu + masuk guni + buang. +RM20 (bawah 150m²) / +RM30 (150m² ke atas).</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- Anggaran harga -->
+        <div id="estimateBox" class="rounded-2xl bg-emerald-900 text-emerald-50 p-5 flex items-center justify-between gap-4 shadow-lg">
+          <div>
+            <div class="text-xs uppercase tracking-wider text-emerald-300/80 font-semibold">Anggaran harga</div>
+            <div id="estimatePrice" class="text-3xl font-extrabold">RM 58</div>
+            <div id="estimateNote" class="text-xs text-emerald-200/70 mt-1">Termasuk tapak RM25. Minima RM50.</div>
+          </div>
+          <i class="fa-solid fa-calculator text-3xl text-emerald-300/60"></i>
         </div>
 
         <!-- Submit -->
@@ -359,14 +404,30 @@
     // Endpoint backend
     const API_URL = 'https://potong-rumput-backend.mykira.workers.dev/api/booking';
 
-    let selectedHouse = '';
+    const THICK_MULT = { NIPIS: 1.0, SEDERHANA: 1.3, TEBAL: 1.6 };
+    const ZONE_FEE = { PUTATAN: 0, KOTA_KINABALU: 5, PENAMPANG: 5, LAIN: 10 };
 
-    function selectHouse(type, price, btn) {
-      selectedHouse = type;
-      document.getElementById('houseType').value = type;
+    function calcEstimate() {
+      const area = Math.max(0, Number(document.getElementById('areaM2').value) || 0);
+      const th = document.getElementById('thickness').value || 'SEDERHANA';
+      const zone = document.getElementById('zone').value || 'PUTATAN';
+      const cleanup = document.getElementById('cleanup').checked;
+      const base = 25 + area * 0.20 * (THICK_MULT[th] || 1.3) + (ZONE_FEE[zone] || 0);
+      const floored = Math.max(50, Math.round(base));
+      const fee = cleanup ? (area >= 150 ? 30 : 20) : 0;
+      const total = floored + fee;
+      document.getElementById('estimatePrice').textContent = 'RM ' + total;
+      document.getElementById('estimateNote').textContent =
+        (base < 50 ? 'Harga minima RM50 dipakai. ' : 'Tapak RM25 + luas × tebal + zon. ') +
+        (cleanup ? 'Termasuk bersih & angkut RM' + fee + '.' : 'Tanpa bersih.');
+      return { area, th, zone, cleanup, total };
+    }
+
+    function selectThickness(type, btn) {
+      document.getElementById('thickness').value = type;
 
       // Visual selection state
-      document.querySelectorAll('.house-card').forEach(card => {
+      document.querySelectorAll('.thick-card').forEach(card => {
         card.classList.remove('border-emerald-500', 'bg-emerald-50/70');
         card.classList.add('border-emerald-100', 'bg-white/60');
         card.setAttribute('aria-checked', 'false');
@@ -375,7 +436,14 @@
       btn.classList.remove('border-emerald-100', 'bg-white/60');
       btn.classList.add('border-emerald-500', 'bg-emerald-50/70');
       btn.setAttribute('aria-checked', 'true');
+      calcEstimate();
     }
+
+    ['areaM2', 'zone', 'cleanup'].forEach(id => {
+      document.getElementById(id).addEventListener('input', calcEstimate);
+      document.getElementById(id).addEventListener('change', calcEstimate);
+    });
+    calcEstimate();
 
     function showMessage(html, isSuccess) {
       const box = document.getElementById('messageBox');
@@ -401,10 +469,13 @@
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const address = document.getElementById('address').value.trim();
-      const houseType = document.getElementById('houseType').value;
+      const zone = document.getElementById('zone').value;
+      const areaM2 = Number(document.getElementById('areaM2').value);
+      const thickness = document.getElementById('thickness').value;
+      const cleanup = document.getElementById('cleanup').checked;
 
-      if (!name || !phone || !address || !houseType) {
-        showMessage('<strong>Perhatian:</strong> Sila lengkapkan semua ruangan dan pilih jenis rumah.', false);
+      if (!name || !phone || !address || !areaM2 || areaM2 < 5) {
+        showMessage('<strong>Perhatian:</strong> Sila lengkapkan semua ruangan (luas minima 5m²).', false);
         return;
       }
 
@@ -421,14 +492,14 @@
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, address, houseType })
+          body: JSON.stringify({ name, phone, address, zone, areaM2, thickness, cleanup })
         });
 
         const data = await response.json();
 
         if (response.ok && data.success) {
           const booking = data.booking;
-          const priceLabel = booking.house_type === 'TERES' ? 'TERES (RM 40)' : booking.house_type === 'SEMI_D' ? 'SEMI_D (RM 70)' : 'BANGLO (RM 120)';
+          const thickLabel = { NIPIS: 'Nipis', SEDERHANA: 'Sederhana', TEBAL: 'Lalang tebal' }[booking.thickness] || booking.thickness || '-';
           showMessage(
             `<div class="flex items-start gap-3">
               <div class="w-10 h-10 rounded-full bg-emerald-200 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-emerald-700 text-sm"></i></div>
@@ -437,8 +508,9 @@
                 <div class="text-sm space-y-0.5">
                   <p><span class="font-semibold">ID Tempahan:</span> <span class="font-mono bg-emerald-100 rounded px-1.5 py-0.5 text-xs">#${booking.id}</span></p>
                   <p><span class="font-semibold">Nama:</span> ${booking.customer_name}</p>
-                  <p><span class="font-semibold">Jenis Rumah:</span> ${priceLabel}</p>
+                  <p><span class="font-semibold">Luas:</span> ${booking.area_m2} m² ${thickLabel} (${booking.zone})${booking.cleanup ? ' + Bersih&angkut' : ''}</p>
                   <p><span class="font-semibold">Harga:</span> RM ${Number(booking.price).toFixed(2)}</p>
+                  ${booking.assigned_provider ? `<p><span class="font-semibold">Ditawarkan kepada:</span> ${booking.assigned_provider} — tukang akan hubungi anda sekejap lagi.</p>` : ''}
                 </div>
                 <div class="mt-3 bg-white/60 rounded-xl p-3 text-xs text-emerald-800/80 border border-emerald-100">
                   <i class="fa-solid fa-info-circle mr-1"></i> Tukang rumput akan menghubungi anda melalui WhatsApp dalam masa terdekat. Sila pastikan nombor telefon aktif.
@@ -448,12 +520,16 @@
             true
           );
           document.getElementById('bookingForm').reset();
-          document.getElementById('houseType').value = '';
-          document.querySelectorAll('.house-card').forEach(c => {
+          document.getElementById('thickness').value = 'SEDERHANA';
+          document.getElementById('areaM2').value = 50;
+          document.getElementById('zone').value = 'PUTATAN';
+          document.getElementById('cleanup').checked = false;
+          document.querySelectorAll('.thick-card').forEach(c => {
             c.classList.remove('border-emerald-500', 'bg-emerald-50/70');
             c.classList.add('border-emerald-100', 'bg-white/60');
             c.setAttribute('aria-checked', 'false');
           });
+          calcEstimate();
         } else {
           showMessage(`<strong>Gagal:</strong> ${data.error || 'Sesuatu yang tidak kena berlaku. Sila cuba semula.'}`, false);
         }
